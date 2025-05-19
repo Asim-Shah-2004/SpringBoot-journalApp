@@ -1,43 +1,54 @@
 package net.journal.journalApp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 import net.journal.journalApp.entity.JournalEntity;
 import net.journal.journalApp.services.JournalEntryService;
 import java.util.List;
 import org.bson.types.ObjectId;
+import javax.validation.Valid;
 
-@RequestMapping("journal")
+@RestController
+@RequestMapping("/journal")
 public class JournalEntryController {
     
     @Autowired
     private JournalEntryService journalEntryService;
 
-    @RequestMapping("/create")
-    public JournalEntity createJournalEntry(@RequestBody JournalEntity journalEntry) {
-        return journalEntryService.createJournalEntry(journalEntry);
+    @PostMapping("/create")
+    public ResponseEntity<JournalEntity> createJournalEntry(@Valid @RequestBody JournalEntity journalEntry) {
+        JournalEntity created = journalEntryService.createJournalEntry(journalEntry);
+        return ResponseEntity.ok(created);
     }
 
-    @RequestMapping("/get/{id}")
-    public JournalEntity getJournalEntryById(@PathVariable ObjectId id) {
-        return journalEntryService.getJournalEntryById(id);
+    @GetMapping("/get/{id}")
+    public ResponseEntity<JournalEntity> getJournalEntryById(@PathVariable ObjectId id) {
+        JournalEntity entry = journalEntryService.getJournalEntryById(id);
+        if (entry == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(entry);
     }
 
-    @RequestMapping("/update/{id}")
-    public JournalEntity updateJournalEntry(@PathVariable ObjectId id, @RequestBody JournalEntity journalEntry) {
-        return journalEntryService.updateJournalEntry(id, journalEntry);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<JournalEntity> updateJournalEntry(@PathVariable ObjectId id, @Valid @RequestBody JournalEntity journalEntry) {
+        JournalEntity updated = journalEntryService.updateJournalEntry(id, journalEntry);
+        if (updated == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updated);
     }
 
-    @RequestMapping("/delete/{id}")
-    public void deleteJournalEntry(@PathVariable ObjectId id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteJournalEntry(@PathVariable ObjectId id) {
         journalEntryService.deleteJournalEntry(id);
+        return ResponseEntity.ok().build();
     }
 
-    @RequestMapping("/all")
-    public List<JournalEntity> getAllJournalEntries() {
-        return journalEntryService.getAllJournalEntries();
+    @GetMapping("/all")
+    public ResponseEntity<List<JournalEntity>> getAllJournalEntries() {
+        List<JournalEntity> entries = journalEntryService.getAllJournalEntries();
+        return ResponseEntity.ok(entries);
     }
-    
 }
