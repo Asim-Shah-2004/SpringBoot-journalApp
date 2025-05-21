@@ -31,27 +31,60 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserEntity>> getAlluser(){
-        List<UserEntity> users = userService.getAllUser();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<?> getAlluser(){
+        try {
+            List<UserEntity> users = userService.getAllUser();
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            System.err.println("Error fetching all users: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error retrieving users: " + e.getMessage());
+        }
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<UserEntity> getUser(@PathVariable String username){
-        UserEntity user = userService.getUser(username);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<?> getUser(@PathVariable String username){
+        try {
+            UserEntity user = userService.getUser(username);
+            return ResponseEntity.ok(user);
+        } catch (RuntimeException e) {
+            System.err.println("Error fetching user: " + e.getMessage());
+            return ResponseEntity.status(404).body("User not found: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Server error: " + e.getMessage());
+        }
     }
 
     @PutMapping("/{username}")
-    public ResponseEntity<UserEntity> updatePassword(@PathVariable String username,@RequestBody String password){
-        UserEntity updatedUser = userService.updateUserPassword(username,password);
-        return ResponseEntity.ok(updatedUser);
+    public ResponseEntity<?> updatePassword(@PathVariable String username, @RequestBody String password){
+        try {
+            UserEntity updatedUser = userService.updateUserPassword(username, password);
+            return ResponseEntity.ok(updatedUser);
+        } catch (RuntimeException e) {
+            System.err.println("Error updating user: " + e.getMessage());
+            return ResponseEntity.status(404).body("Failed to update: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Server error: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{username}")
-    public ResponseEntity<UserEntity> deleteUser(@PathVariable String username){
-        UserEntity deletedUser = userService.deleteUser(username);
-        return ResponseEntity.ok(deletedUser);
+    public ResponseEntity<?> deleteUser(@PathVariable String username){
+        try {
+            UserEntity deletedUser = userService.deleteUser(username);
+            return ResponseEntity.ok(deletedUser);
+        } catch (RuntimeException e) {
+            System.err.println("Error deleting user: " + e.getMessage());
+            return ResponseEntity.status(404).body("Failed to delete: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Server error: " + e.getMessage());
+        }
     }
 
 }
