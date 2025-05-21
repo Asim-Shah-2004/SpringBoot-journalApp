@@ -3,7 +3,10 @@ package net.journal.journalApp.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import net.journal.journalApp.entity.JournalEntity;
+import net.journal.journalApp.entity.UserEntity;
 import net.journal.journalApp.repository.JournalEntryRepository;
+import net.journal.journalApp.repository.UserRepository;
+
 import java.util.List;
 import java.time.Instant;
 import org.bson.types.ObjectId;
@@ -14,11 +17,21 @@ public class JournalEntryService {
     @Autowired
     private JournalEntryRepository journalEntryRepository;
 
-    public JournalEntity createJournalEntry(JournalEntity journalEntry) {
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    public JournalEntity createJournalEntry(JournalEntity journalEntry,String username) {
         Instant now = Instant.now();
         journalEntry.setCreatedAt(now);
         journalEntry.setUpdatedAt(now);
-        return journalEntryRepository.save(journalEntry);
+        journalEntryRepository.save(journalEntry);
+        UserEntity user = userService.getUser(username);
+        user.getJournals().add(journalEntry);
+        userRepository.save(user);
+        return journalEntry;
     }
 
     public JournalEntity getJournalEntryById(ObjectId id) {
@@ -38,11 +51,15 @@ public class JournalEntryService {
         return null;
     }
 
-    public void deleteJournalEntry(ObjectId id) {
+    public void deleteJournalEntry(ObjectId id,String username) {
+        UserEntity user = userService.getUser(username);
+        List<JournalEntity> journals = user.getJournals();
+        journals.removeIf(journal -> journal.getId().equals(id));
         journalEntryRepository.deleteById(id);
     }
 
-    public List<JournalEntity> getAllJournalEntries() {
-        return journalEntryRepository.findAll();
+    public List<JournalEntity> getAllJournalEntries(String username) {
+        UserEntity user = userService.getUser(username);
+        return user.getJournals();
     }
 }
