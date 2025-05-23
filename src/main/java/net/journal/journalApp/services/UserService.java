@@ -1,6 +1,7 @@
 package net.journal.journalApp.services;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -27,6 +28,7 @@ public class UserService {
         userEntity.setUpdatedAt(now);
         String rawPassword = userEntity.getPassword();
         userEntity.setPassword(passwordEncoder.encode(rawPassword));
+        userEntity.setRoles(Arrays.asList("USER"));
         return userRepository.save(userEntity);
     }
 

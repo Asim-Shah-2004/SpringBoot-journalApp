@@ -3,10 +3,10 @@ package net.journal.journalApp.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import net.journal.journalApp.entity.JournalEntity;
-import net.journal.journalApp.entity.UserEntity;
 import net.journal.journalApp.services.JournalEntryService;
-import net.journal.journalApp.services.UserService;
+
 
 import java.util.List;
 import org.bson.types.ObjectId;
@@ -19,8 +19,9 @@ public class JournalEntryController {
     @Autowired
     private JournalEntryService journalEntryService;
 
-    @PostMapping("/create/{username}")
-    public ResponseEntity<JournalEntity> createJournalEntry(@Valid @RequestBody JournalEntity journalEntry,@PathVariable String username) {
+    @PostMapping("/create")
+    public ResponseEntity<JournalEntity> createJournalEntry(@Valid @RequestBody JournalEntity journalEntry) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         JournalEntity created = journalEntryService.createJournalEntry(journalEntry,username);
         return ResponseEntity.ok(created);
     }
@@ -43,14 +44,16 @@ public class JournalEntryController {
         return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("/delete/{username}/{id}")
-    public ResponseEntity<Void> deleteJournalEntry(@PathVariable ObjectId id,@PathVariable String username) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteJournalEntry(@PathVariable ObjectId id) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         journalEntryService.deleteJournalEntry(id,username);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/all/{username}")
-    public ResponseEntity<List<JournalEntity>> getAllJournalEntries(@PathVariable String username) {
+    @GetMapping("/all")
+    public ResponseEntity<List<JournalEntity>> getAllJournalEntries() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         List<JournalEntity> entries = journalEntryService.getAllJournalEntries(username);
         return ResponseEntity.ok(entries);
     }

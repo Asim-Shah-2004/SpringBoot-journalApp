@@ -2,9 +2,9 @@ package net.journal.journalApp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +32,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<?> getUser(@PathVariable String username){
+    @GetMapping
+    public ResponseEntity<?> getUser(){
         try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
             UserEntity user = userService.getUser(username);
             return ResponseEntity.ok(user);
         } catch (RuntimeException e) {
@@ -47,9 +48,10 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{username}")
-    public ResponseEntity<?> updatePassword(@PathVariable String username, @RequestBody String password){
+    @PutMapping
+    public ResponseEntity<?> updatePassword(@RequestBody String password){
         try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
             UserEntity updatedUser = userService.updateUserPassword(username, password);
             return ResponseEntity.ok(updatedUser);
         } catch (RuntimeException e) {
@@ -62,9 +64,10 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{username}")
-    public ResponseEntity<?> deleteUser(@PathVariable String username){
+    @DeleteMapping
+    public ResponseEntity<?> deleteUser(){
         try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
             UserEntity deletedUser = userService.deleteUser(username);
             return ResponseEntity.ok(deletedUser);
         } catch (RuntimeException e) {
