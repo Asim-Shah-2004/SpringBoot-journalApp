@@ -2,6 +2,8 @@ package net.journal.journalApp.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import net.journal.journalApp.entity.JournalEntity;
 import net.journal.journalApp.entity.UserEntity;
 import net.journal.journalApp.repository.JournalEntryRepository;
@@ -23,6 +25,7 @@ public class JournalEntryService {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional
     public JournalEntity createJournalEntry(JournalEntity journalEntry,String username) {
         Instant now = Instant.now();
         journalEntry.setCreatedAt(now);
@@ -51,6 +54,7 @@ public class JournalEntryService {
         return null;
     }
 
+    @Transactional
     public void deleteJournalEntry(ObjectId id,String username) {
         UserEntity user = userService.getUser(username);
         List<JournalEntity> journals = user.getJournals();

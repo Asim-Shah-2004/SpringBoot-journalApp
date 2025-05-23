@@ -31,7 +31,4 @@ public class AuthService implements UserDetailsService{
 
         throw new UsernameNotFoundException(username, null);
     }
-
-    
-
 }
