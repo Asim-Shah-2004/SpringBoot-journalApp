@@ -7,8 +7,21 @@
 	},
 	"item": [
 		{
-			"name": "User",
+			"name": "Public",
 			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/public/health",
+							"host": ["{{base_url}}"],
+							"path": ["public", "health"]
+						},
+						"description": "Check if the API is alive"
+					}
+				},
 				{
 					"name": "Register User",
 					"request": {
@@ -24,28 +37,33 @@
 							"raw": "{\n    \"username\": \"john_doe\",\n    \"password\": \"securepassword\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/user",
+							"raw": "{{base_url}}/public/register",
 							"host": ["{{base_url}}"],
-							"path": ["user"]
+							"path": ["public", "register"]
 						},
 						"description": "Register a new user"
 					}
-				},
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
 				{
-					"name": "Get User by Username",
+					"name": "Get Current User",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/user/{{username}}",
+							"raw": "{{base_url}}/user",
 							"host": ["{{base_url}}"],
-							"path": ["user", "{{username}}"]
+							"path": ["user"]
 						},
-						"description": "Retrieve a specific user by username"
+						"description": "Get the currently authenticated user"
 					}
 				},
 				{
-					"name": "Update User Password",
+					"name": "Update Password",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -59,11 +77,11 @@
 							"raw": "newpassword123"
 						},
 						"url": {
-							"raw": "{{base_url}}/user/{{username}}",
+							"raw": "{{base_url}}/user",
 							"host": ["{{base_url}}"],
-							"path": ["user", "{{username}}"]
+							"path": ["user"]
 						},
-						"description": "Update a user's password"
+						"description": "Update current user's password"
 					}
 				},
 				{
@@ -72,11 +90,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/user/{{username}}",
+							"raw": "{{base_url}}/user",
 							"host": ["{{base_url}}"],
-							"path": ["user", "{{username}}"]
+							"path": ["user"]
 						},
-						"description": "Delete a user"
+						"description": "Delete the current user"
 					}
 				},
 				{
@@ -112,11 +130,11 @@
 							"raw": "{\n    \"title\": \"My First Journal Entry\",\n    \"content\": \"This is the content of my first journal entry.\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/journal/create/{{username}}",
+							"raw": "{{base_url}}/journal/create",
 							"host": ["{{base_url}}"],
-							"path": ["journal", "create", "{{username}}"]
+							"path": ["journal", "create"]
 						},
-						"description": "Create a new journal entry for a user"
+						"description": "Create a new journal entry"
 					}
 				},
 				{
@@ -160,11 +178,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/journal/delete/{{username}}/{{journal_id}}",
+							"raw": "{{base_url}}/journal/delete/{{journal_id}}",
 							"host": ["{{base_url}}"],
-							"path": ["journal", "delete", "{{username}}", "{{journal_id}}"]
+							"path": ["journal", "delete", "{{journal_id}}"]
 						},
-						"description": "Delete a journal entry for a user"
+						"description": "Delete a journal entry"
 					}
 				},
 				{
@@ -173,11 +191,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/journal/all/{{username}}",
+							"raw": "{{base_url}}/journal/all",
 							"host": ["{{base_url}}"],
-							"path": ["journal", "all", "{{username}}"]
+							"path": ["journal", "all"]
 						},
-						"description": "Retrieve all journal entries for a user"
+						"description": "Retrieve all journal entries for the current user"
 					}
 				}
 			]
@@ -192,11 +210,6 @@
 		{
 			"key": "journal_id",
 			"value": "65f9a1b2c3d4e5f6a7b8c9d0",
-			"type": "string"
-		},
-		{
-			"key": "username",
-			"value": "john_doe",
 			"type": "string"
 		}
 	]
