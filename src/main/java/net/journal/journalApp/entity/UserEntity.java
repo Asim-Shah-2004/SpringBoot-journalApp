@@ -26,6 +26,8 @@ public class UserEntity {
     @DBRef
     private List<JournalEntity> journals = new ArrayList<>();
     
+    private List<String> roles = new ArrayList<>();
+
     private Instant createdAt;
     private Instant updatedAt;
     

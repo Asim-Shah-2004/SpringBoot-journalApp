@@ -13,9 +13,6 @@ public class JournalAppApplication {
         if (mongoUri == null || mongoUri.trim().isEmpty()) {
             throw new IllegalStateException("MONGO_URI environment variable is not set in .env file");
         }
-        if (!mongoUri.startsWith("mongodb://") && !mongoUri.startsWith("mongodb+srv://")) {
-            throw new IllegalStateException("Invalid MongoDB URI format. Must start with 'mongodb://' or 'mongodb+srv://'");
-        }
         System.setProperty("MONGO_URI", mongoUri);
         
         SpringApplication.run(JournalAppApplication.class, args);
