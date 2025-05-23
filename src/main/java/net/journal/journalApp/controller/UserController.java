@@ -20,18 +20,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAlluser(){
-        try {
-            List<UserEntity> users = userService.getAllUser();
-            return ResponseEntity.ok(users);
-        } catch (Exception e) {
-            System.err.println("Error fetching all users: " + e.getMessage());
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("Error retrieving users: " + e.getMessage());
-        }
-    }
-
     @GetMapping
     public ResponseEntity<?> getUser(){
         try {
