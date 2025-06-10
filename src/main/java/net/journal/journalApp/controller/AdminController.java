@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import net.journal.journalApp.cache.AppCache;
 import net.journal.journalApp.entity.UserEntity;
 import net.journal.journalApp.services.UserService;
 
@@ -17,6 +18,9 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired 
+    private AppCache appCache;
 
     @GetMapping("/all")
     public ResponseEntity<?> getAlluser(){
@@ -28,5 +32,11 @@ public class AdminController {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Error retrieving users: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/clear-cache")
+    public ResponseEntity<String> clearCache(){
+        appCache.init();
+        return ResponseEntity.status(200).body("Cache cleared");
     }
 }
