@@ -16,7 +16,6 @@ public class JournalAppApplication {
         Dotenv dotenv = Dotenv.load();
         String mongoUri = dotenv.get("MONGO_URI");
         String activeEnvironment = dotenv.get("SPRING_PROFILES_ACTIVE", "dev");
-        
         log.info("MONGO URI : {}", mongoUri);
         log.info("ACTIVE ENVIRONMENT : {}", activeEnvironment);
         

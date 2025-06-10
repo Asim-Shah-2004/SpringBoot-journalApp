@@ -2,6 +2,7 @@ package net.journal.journalApp.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.journal.journalApp.entity.JournalEntity;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.time.Instant;
 import org.bson.types.ObjectId;
 
-@Component
+@Service
 public class JournalEntryService {
     
     @Autowired

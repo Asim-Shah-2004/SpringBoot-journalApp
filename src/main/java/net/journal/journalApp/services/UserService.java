@@ -7,11 +7,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import net.journal.journalApp.repository.UserRepository;
 import net.journal.journalApp.entity.UserEntity;
 
-@Component
+@Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
