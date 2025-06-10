@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import net.journal.journalApp.entity.UserEntity;
 import net.journal.journalApp.services.UserService;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/user")
