@@ -27,7 +27,8 @@ public class UserEntity {
     private List<JournalEntity> journals = new ArrayList<>();
     
     private List<String> roles = new ArrayList<>();
-
+    private String Email;
+    private boolean sentiment;
     private Instant createdAt;
     private Instant updatedAt;
     

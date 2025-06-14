@@ -1,5 +1,7 @@
 package net.journal.journalApp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.journal.journalApp.cache.AppCache;
 import net.journal.journalApp.constants.PlaceHolder;
 import net.journal.journalApp.entity.UserEntity;
+import net.journal.journalApp.repository.UserCriteria;
 import net.journal.journalApp.responses.WeatherResponse;
 import net.journal.journalApp.services.UserService;
 
@@ -35,6 +38,9 @@ public class PublicControllers {
     @Autowired
     private AppCache appCache;
 
+    @Autowired
+    private UserCriteria userCriteria;
+
    @GetMapping("/health")
    public ResponseEntity<String> healthCheck(){
         return ResponseEntity.ok("Alive");
@@ -54,6 +60,11 @@ public class PublicControllers {
         ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalApi, HttpMethod.GET, null, WeatherResponse.class);
         log.info("Weather Response: {}", response.getBody());
         return ResponseEntity.ok(response.getBody());
+    }
+
+    @GetMapping("/test-criteria")
+    public ResponseEntity<List<UserEntity>> getusers(){
+        return ResponseEntity.ok(userCriteria.getUsersForSA());
     }
 
 }
